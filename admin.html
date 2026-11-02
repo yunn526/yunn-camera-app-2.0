@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#102a56">
+<title>Yunn Camera 管理後台</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="shell wide" style="padding-bottom:30px">
+  <header class="topbar">
+    <div class="brand">YUNN <span>/</span> ADMIN</div>
+    <a href="index.html" class="badge">回相機</a>
+  </header>
+
+  <section id="login" class="login">
+    <div class="eyebrow">ADMIN</div>
+    <h1>管理員後台</h1>
+    <p>請用管理員 Google 帳號登入。是否為管理員由後端判斷，這個頁面本身不包含任何使用者資料。</p>
+    <div id="gbtn" class="gbtn"></div>
+    <p id="loginMsg" class="msg" role="status"></p>
+    <p id="setupWarn" class="msg warn" style="display:none">尚未設定：請在 js/config.js 填入 GOOGLE_CLIENT_ID 與 API_URL。</p>
+  </section>
+
+  <main id="panel" style="display:none;padding:20px">
+    <div class="eyebrow">DASHBOARD</div>
+    <h2>使用統計</h2>
+    <p id="who" class="note"></p>
+    <div id="denied" class="msg warn" style="display:none">此帳號沒有管理員權限（後端已拒絕）。</div>
+    <div id="content" style="display:none">
+      <div class="stats" id="stats"></div>
+
+      <div class="label">設定使用者方案</div>
+      <form id="planForm" class="form">
+        <input class="input" id="pfEmail" type="email" placeholder="使用者 Gmail" required>
+        <select class="input" id="pfPlan"><option value="PRO">PRO</option><option value="FREE">FREE</option></select>
+        <input class="input" id="pfUntil" type="date" aria-label="PRO 到期日（可留空表示不限期）">
+        <button class="btn" type="submit" style="flex:0 0 auto">儲存</button>
+      </form>
+      <p id="planMsg" class="msg"></p>
+
+      <div class="label">使用者 <button id="reload" class="btn ghost small" type="button" style="flex:0 0 auto;padding:6px 12px">重新整理</button></div>
+      <div class="tablewrap"><table><thead><tr><th>帳號</th><th>名稱</th><th>方案</th><th>PRO 到期</th><th>登入</th><th>拍照</th><th>下載</th><th>雲端同步</th><th>最後使用</th></tr></thead><tbody id="users"></tbody></table></div>
+
+      <div class="label">最近 100 筆事件</div>
+      <div class="tablewrap"><table><thead><tr><th>時間</th><th>帳號</th><th>事件</th><th>細節</th></tr></thead><tbody id="events"></tbody></table></div>
+    </div>
+    <button id="logout" class="btn ghost" type="button" style="margin-top:18px">登出</button>
+  </main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="window.dispatchEvent(new Event('gis-ready'))"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

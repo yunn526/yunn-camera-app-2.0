@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#102a56">
+<meta name="description" content="Yunn Camera：登入後使用的手機相機，照片只在你的裝置上處理。">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Yunn Camera</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">YUNN <span>/</span> CAMERA</div>
+    <div class="plan"><span id="planBadge" class="badge"></span></div>
+  </header>
+
+  <!-- 未登入：只顯示登入區，不載入相機功能 -->
+  <section id="login" class="login">
+    <div class="eyebrow">YUNN CAMERA</div>
+    <h1>登入後開始拍照</h1>
+    <p>使用 Google 帳號登入。照片只會在你的裝置上處理，不會上傳給管理員；管理員只看得到登入、拍照與下載的次數。</p>
+    <div id="gbtn" class="gbtn"></div>
+    <p id="loginMsg" class="msg" role="status"></p>
+    <p id="setupWarn" class="msg warn" style="display:none">尚未設定：請在 js/config.js 填入 GOOGLE_CLIENT_ID 與 API_URL（見 README）。</p>
+  </section>
+
+  <main id="app" style="display:none">
+    <section id="page-camera" class="page active">
+      <div class="view">
+        <video id="video" autoplay playsinline muted></video>
+        <div id="placeholder" class="placeholder"><div class="big">◎</div><b>相機預覽</b><small>按下「開啟相機」並允許權限</small></div>
+        <div class="view-top"><span id="camMode">未開啟</span></div>
+      </div>
+      <div class="row">
+        <button id="camToggle" class="btn" type="button">開啟相機</button>
+        <button id="camSwitch" class="btn ghost" type="button" disabled>切換前／後鏡頭</button>
+      </div>
+      <div class="label">濾鏡 <small>★ 為 PRO</small></div>
+      <div id="filters" class="chips"></div>
+      <div class="label">亮度 <span id="brightVal" class="val">0</span></div>
+      <input id="bright" type="range" min="-50" max="50" step="5" value="0" aria-label="亮度">
+      <div class="shutter-row"><button id="shutter" class="shutter" type="button" aria-label="拍照">●</button></div>
+    </section>
+
+    <section id="page-gallery" class="page">
+      <div class="eyebrow">GALLERY</div><h2>本次拍攝的照片</h2>
+      <p class="note">照片只存在這個瀏覽器分頁的記憶體中，關閉或重新整理後會消失，請先下載。</p>
+      <div class="card">
+        <b>☁️ 同步到我的 Google Drive</b>
+        <p class="note">選填。按下後，照片會從你的手機直接傳到你自己的 Google Drive「Yunn 拍貼」資料夾，不經過我們，管理員也看不到。本網站只能存取它自己建立的檔案。</p>
+        <button id="syncBtn" class="btn" type="button">同步照片到雲端</button>
+        <p id="cloudStatus" class="note" role="status" style="margin:10px 0 0">尚未同步。</p>
+      </div>
+      <div class="label">我的照片 <span id="photoCount" class="val">0 張</span></div>
+      <div id="galleryGrid" class="grid"></div>
+      <div id="galleryEmpty" class="empty">還沒有照片，去相機頁拍一張吧。</div>
+    </section>
+
+    <section id="page-account" class="page">
+      <div class="eyebrow">ACCOUNT</div><h2>我的帳號</h2>
+      <div class="card">
+        <div class="kv"><span>帳號</span><b id="acctEmail"></b></div>
+        <div class="kv"><span>方案</span><b id="acctPlan"></b></div>
+      </div>
+      <div class="card">
+        <b>升級 PRO</b>
+        <p class="note">目前由管理員核發 PRO。核發後按下「重新取得方案」即可更新。</p>
+        <button id="refreshPlan" class="btn ghost" type="button">重新取得方案</button>
+      </div>
+      <a id="adminLink" class="btn" href="admin.html" style="display:none">前往管理員後台</a>
+      <button id="logout" class="btn ghost" type="button" style="margin-top:10px">登出</button>
+    </section>
+  </main>
+
+  <nav id="nav" class="bottomnav" aria-label="主要導覽">
+    <button class="navbtn active" data-page="camera" type="button"><span>◎</span>相機</button>
+    <button class="navbtn" data-page="gallery" type="button"><span>▦</span>相簿</button>
+    <button class="navbtn" data-page="account" type="button"><span>☺</span>帳號</button>
+  </nav>
+</div>
+<div id="toast" class="toast" role="status"></div>
+
+<script src="js/config.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="window.dispatchEvent(new Event('gis-ready'))"></script>
+<script src="js/auth.js"></script>
+<script src="js/camera.js"></script>
+</body>
+</html>
